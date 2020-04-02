@@ -9,15 +9,15 @@ const connection = mysql.createConnection({
     database: "trackerDB." 
 });
 
-connection.connect(err => {
-    if (err) {
-      console.error("error connecting: " + err.stack);
-      return;
-    }
-    console.log("connected as id " + connection.threadId);
+connection.connect(error => {
+    if (error) throw error;
+    console.log("Connection complete!");
+    Menu();
   });
 
-  
+  function Menu(){
+
+  }
   
   
   
