@@ -1,13 +1,13 @@
 USE trackerDB;
 
-INSERT INTO Company(deparment) VALUES ("Sales");
+INSERT INTO company(deparment) VALUES ("Sales");
 
-INSERT INTO Company(department) VALUES ("Recuiters");
+INSERT INTO company(department) VALUES ("Recuiters");
 
-INSERT INTO Company(department) VALUES ("Account Management");
+INSERT INTO company(department) VALUES ("Account Management");
 
-INSERT INTO Company(department) VALUES ("IT office");
+INSERT INTO company(department) VALUES ("IT office");
 
-INSERT INTO Company(department) VALUES ("Maintenance");
+INSERT INTO company(department) VALUES ("Maintenance");
 
-INSERT INTO Company(department) VALUES ("Human Resources");
+INSERT INTO company(department) VALUES ("Human Resources");
