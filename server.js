@@ -63,8 +63,31 @@ connection.connect(error => {
           type: "input",
           message: "What is your name?"
       }).then(res => {
-          let queryString = `INSERT INTO trackerDB.employee()`
-      })
-  }
+          let query = `SELECT * FROM trackerDB.employee.title`;
+          connection.query(query, (error,res)=>{
+              if (error) {
+                console.log(error)
+                promptMainMenu();
+                return;
+              }
+          })
+
+          let title = [];
+          for(let i = 0; i <res.length;i++){
+              let titleString = res[i].title;
+              title.push(titleString);
+          }
+
+          let query2 = `SELECT * FROM trackerDB.employee`;
+          connection.query(query2, (error,res) => {
+            if(error){
+                console.log(error)
+                promptMainMenu();
+                return;
+            }
+
+          }
+    )}
+)}
   
   module.exports = connection;
