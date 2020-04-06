@@ -56,7 +56,7 @@ connection.connect(error => {
 
   }
 
-  promptForNewEmployee() {
+ function promptForNewEmployee(){
 
           let titleQuery = `SELECT * FROM trackerDB.employee.title`;
           connection.query(titleQuery, (error,res)=>{
@@ -153,7 +153,7 @@ connection.connect(error => {
             if (error){
                 promptMenu();
             } else{
-                let choiceList[];
+                let choiceList = [];
 
                 for (let i = 0; i < res.length; i++) {
                     let departmentName = res[i].name;
@@ -186,7 +186,7 @@ connection.connect(error => {
                     console.log(error,res);
                     let dptQuery = `INSERT INTO trackerDB.title (titleID, salary, department_role) VALUES ("${response.newTitle}", "${response.salaryRange}", "${response.newTitlesDepartment}")`
 
-                    let companyQuery = connection.query(companyQuery, (error,res)=>{
+                    let companyQuery = connection.query(dptQuery, (error,res)=>{
                         console.log(error,res);
                     })
                     promptMenu();
@@ -214,7 +214,33 @@ connection.connect(error => {
         });
       
       }
+    function AllTitles() {
+        let thatQuery = `SELECT * FROM trackerDB.title`;
+        let thisQuery = connection.query(thatQuery, (error,res) => {
+            if (error){
+                console.log(error);
+                }
+                promptMenu();
+        });
+    }
+    function AllEmployees() {
+        let queryAllEmployees = `SELECT e.id, e.firstName, e.lastName, r.title, r.salary, concat(m.firstName, ' ', m.lastName) AS Manager
+        FROM employeeDB.employee e
+        LEFT JOIN employeeDB.employeeRole r
+        ON e.roleID = r.id
+        LEFT JOIN employeeDB.employee m
+        ON e.managerID = m.id`;
+        let queryAgain = connection.query(queryAllEmployees, (err, res) => {
       
-    
+          if (err) {
+            console.log(err);
+          }
+          else {
+            console.table(res)
+          }
+          promptMenu();
+        });
+      
+      }
   
   module.exports = connection;
