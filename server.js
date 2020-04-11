@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
 });
 
 connection.connect(error => {
-    if (error) throw error;
+    if (error)
     console.log("Connection complete!");
     Menu();
   });
@@ -54,7 +54,7 @@ connection.connect(error => {
         }
     })
 
-  }
+  };
 
  function promptForNewEmployee(){
 
@@ -62,7 +62,7 @@ connection.connect(error => {
           connection.query(titleQuery, (error,res)=>{
               if (error) {
                 console.log(error,res)
-                promptMenu();
+                Menu();
                 return;
               }
           })
@@ -76,7 +76,7 @@ connection.connect(error => {
           connection.query(employeeQuery, (error,res) => {
               if (error){
                 console.log(error,res)
-                promptMenu();
+                Menu();
                 return;
             }
 
@@ -130,15 +130,15 @@ connection.connect(error => {
                 if (res.Managers === -1) {
                     newQueryString = `INSERT INTO trackerDB.employee(firstName, lastName, title, manager) VALUES ("${res.employeeFirstName}", "${res.employeeLastName}", "${res.listTitles}", null)`;
                 }else {
-                    newQueryString = `INSERT INTO employeeDB.employee (firstName, lastName, title, manager) VALUES ("${res.employeeFirstName}", "${res.employeeLastName}", "${res.listTitles}", "${res.Managers}")`;
+                    newQueryString = `INSERT INTO trackerDB.employee (firstName, lastName, title, manager) VALUES ("${res.employeeFirstName}", "${res.employeeLastName}", "${res.listTitles}", "${res.Managers}")`;
                   }
 
-                  let thisQuery = connection.thisQuery(newQueryString,(error, res) => {
+                  let query = connection.query(newQueryString,(error, res) => {
                       if (error){
-                          console.log(error,res);
+                          console.log(error,res, query);
                       }
 
-                      promptMenu();
+                      Menu();
                   })
             })
 
@@ -187,41 +187,41 @@ connection.connect(error => {
                     let dptQuery = `INSERT INTO trackerDB.title (titleID, salary, department_role) VALUES ("${response.newTitle}", "${response.salaryRange}", "${response.newTitlesDepartment}")`
 
                     let companyQuery = connection.query(dptQuery, (error,res)=>{
-                        console.log(error,res);
+                        console.log(error,companyQuery,res);
                     })
-                    promptMenu();
-                })
-            }
+                    Menu();
+                });
+            };
             
         
             
         
         })
 
-    }
+    };
 
     function AllDepartments() {
         let departmentQuery = `SELECT * FROM trackerDB.company`;
-        let query = connection.query(departmentQuery, (err, res) => {
+        let query = connection.query(departmentQuery, (error, res) => {
       
-          if (err) {
-            console.log(err);
+          if (error) {
+            console.log(error);
           }
           else {
-            console.table(res)
+            console.table(res,query)
           }
-          promptMainMenu();
-        });
+          Menu();
+        })
       
       }
     function AllTitles() {
         let thatQuery = `SELECT * FROM trackerDB.title`;
         let thisQuery = connection.query(thatQuery, (error,res) => {
             if (error){
-                console.log(error);
+                console.log(error,thisQuery,res);
                 }
-                promptMenu();
-        });
+                Menu();
+        })
     }
     function AllEmployees() {
         let queryAllEmployees = `SELECT e.id, e.firstName, e.lastName, r.title, r.salary, concat(m.firstName, ' ', m.lastName) AS Manager
@@ -230,17 +230,15 @@ connection.connect(error => {
         ON e.roleID = r.id
         LEFT JOIN employeeDB.employee m
         ON e.managerID = m.id`;
-        let queryAgain = connection.query(queryAllEmployees, (err, res) => {
+        let queryAgain = connection.query(queryAllEmployees, (error, res) => {
       
-          if (err) {
-            console.log(err);
+          if (errpr) {
+            console.log(error);
           }
           else {
-            console.table(res)
+            console.table(res,queryAgain)
           }
-          promptMenu();
-        });
+          Menu();
+        })
       
-      }
-  
-  module.exports = connection;
+    }
