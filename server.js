@@ -59,9 +59,9 @@ connection.connect(error => {
  function promptForNewEmployee(){
 
           let titleQuery = `SELECT * FROM trackerDB.employee.title`;
-          connection.query(titleQuery, (error,res)=>{
+          connection.query(titleQuery, (error, res)=>{
               if (error) {
-                console.log(error,res)
+                console.log(error)
                 Menu();
                 return;
               }
@@ -82,8 +82,8 @@ connection.connect(error => {
 
             let managers = [];
 
-            for (let i = 0; i < res2.length; i++){
-                let managersName = res2[i].firstName = "" + res2[i].lastName;
+            for (let i = 0; i < res.length; i++){
+                let managersName = res[i].firstName = "" + res[i].lastName;
                 manager.push(managersName);
             }
             manager.push("None");
