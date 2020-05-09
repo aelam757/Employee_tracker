@@ -57,21 +57,19 @@ connection.connect(error => {
   };
 
  function promptForNewEmployee(){
-
-          let titleQuery = `SELECT * FROM trackerDB.employee.title`;
-          connection.query(titleQuery, (error, res)=>{
-              if (error) {
-                console.log(error)
-                Menu();
-                return;
-              }
-          })
-          let title = [];
-          for(let i = 0; i <res.length;i++){
-              let titleString = res[i].title;
-              title.push(titleString);
+    let titleQuery = `SELECT * FROM trackerDB.employee.title`;
+    connection.query(titleQuery, (error, res) =>{
+        if (error) {
+        console.log(error,res)
+        Menu();
+        return;
+        }
+    })
+        let title = [];
+        for(let i = 0; i < res.length;i++){
+            let titleString = res[i].title;
+            title.push(titleString);
           }
-
         let employeeQuery  = `SELECT * FROM trackerDB.employee`;
           connection.query(employeeQuery, (error,res) => {
               if (error){
@@ -79,15 +77,12 @@ connection.connect(error => {
                 Menu();
                 return;
             }
-
             let managers = [];
-
             for (let i = 0; i < res.length; i++){
                 let managersName = res[i].firstName = "" + res[i].lastName;
                 manager.push(managersName);
             }
             manager.push("None");
-
             inquirer.prompt([
                 {
                     name: "employeeFirstName",
@@ -137,29 +132,44 @@ connection.connect(error => {
                       if (error){
                           console.log(error,res, query);
                       }
-
                       Menu();
                   })
             })
-
-
         }
     )};
 
-    function promptForNewTitle(){
-        let newTitle = "SELECT * FROM trackerDB.company";
-        connection.query(newTitle,(error,res) => {
-            console.log(error, res);
-            if (error){
-                promptMenu();
-            } else{
-                let choiceList = [];
+function promptForNewDepartment() {
+    inquirer
+        .prompt({
+            name: "newDepartment",
+            type: "input",
+            message: "What department would you like to add?"
+        })
+        .then(res => {
+            // Add to the database
+            let queryString = `INSERT INTO trackerDB.company (name) VALUES ("${res.newDepartment}")`;
+            //values from our object below are substituted into "?" above.
+            let query = connection.query(queryString, (error, res) => {
+            if (error) {
+            console.log(error,res, query);
+            Menu();
+            }
+            })
+        })
+};
 
+function promptForNewTitle(){
+    let newTitle = "SELECT * FROM trackerDB.company";
+    connection.query(newTitle,(error,res) => {
+        console.log(error, res);
+        if (error){
+        Menu();
+        } else{
+            let choiceList = [];
                 for (let i = 0; i < res.length; i++) {
-                    let departmentName = res[i].name;
-                    choiceList.push(departmentName);
+                let departmentName = res[i].name;
+                choiceList.push(departmentName);
                 }
-
                 inquirer.prompt([
                     {
                         name: "newTitle",
@@ -185,25 +195,17 @@ connection.connect(error => {
                 ]) .then(res => {
                     console.log(error,res);
                     let dptQuery = `INSERT INTO trackerDB.title (titleID, salary, department_role) VALUES ("${response.newTitle}", "${response.salaryRange}", "${response.newTitlesDepartment}")`
-
                     let companyQuery = connection.query(dptQuery, (error,res)=>{
                         console.log(error,companyQuery,res);
                     })
                     Menu();
                 });
-            };
-            
-        
-            
-        
-        })
-
-    };
-
+        };    
+    })
+};
     function AllDepartments() {
         let departmentQuery = `SELECT * FROM trackerDB.company`;
-        let query = connection.query(departmentQuery, (error, res) => {
-      
+        let query = connection.query(departmentQuery, (error, res) => {   
           if (error) {
             console.log(error);
           }
@@ -212,8 +214,7 @@ connection.connect(error => {
           }
           Menu();
         })
-      
-      }
+    }
     function AllTitles() {
         let thatQuery = `SELECT * FROM trackerDB.title`;
         let thisQuery = connection.query(thatQuery, (error,res) => {
