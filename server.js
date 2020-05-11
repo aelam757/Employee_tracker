@@ -6,18 +6,18 @@ const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "root",
-    database: "trackerDB." 
+    database: "trackerDB" 
 });
 
 connection.connect(error => {
     if (error)
     console.log("Connection complete!");
     Menu();
-  });
+});
 
   function Menu(){
     inquirer.prompt({
-        name:"Main Menu",
+        name:"mainMenu",
         type: "list",
         message: "Where do you want to start?",
         choices: [
@@ -32,7 +32,7 @@ connection.connect(error => {
         ]
     })
     .then(res => {
-        switch (res["Main Menu"]){
+        switch (res.mainMenu){
             case "Add a Employee":
                 promptForNewEmployee();
             break;
@@ -57,22 +57,27 @@ connection.connect(error => {
   };
 
  function promptForNewEmployee(){
-    let titleQuery = `SELECT * FROM trackerDB.employee.title`;
+    let titleQuery = `SELECT title FROM employee`;
     connection.query(titleQuery, (error, res) =>{
+        console.log(res);
         if (error) {
         console.log(error,res)
         Menu();
         return;
         }
-    })
-        let title = [];
+    
+        let titles = [];
         for(let i = 0; i < res.length;i++){
+            console.log(res[i]);
             let titleString = res[i].title;
-            title.push(titleString);
-          }
-        let employeeQuery  = `SELECT * FROM trackerDB.employee`;
-          connection.query(employeeQuery, (error,res) => {
-              if (error){
+            titles.push(titleString);
+            console.log(titles);
+        }
+        console.log(titles);
+    
+        let employeeQuery  = `SELECT * FROM employee`;
+        connection.query(employeeQuery, (error,res) => {
+            if (error){
                 console.log(error,res)
                 Menu();
                 return;
@@ -80,9 +85,11 @@ connection.connect(error => {
             let managers = [];
             for (let i = 0; i < res.length; i++){
                 let managersName = res[i].firstName = "" + res[i].lastName;
-                manager.push(managersName);
+                managers.push(managersName);
+                console.log(managers);
             }
-            manager.push("None");
+            console.log(managers);
+            managers.push("None");
             inquirer.prompt([
                 {
                     name: "employeeFirstName",
@@ -135,8 +142,10 @@ connection.connect(error => {
                       Menu();
                   })
             })
-        }
-    )};
+        });
+    });
+};
+
 
 function promptForNewDepartment() {
     inquirer
@@ -204,13 +213,13 @@ function promptForNewTitle(){
     })
 };
     function AllDepartments() {
-        let departmentQuery = `SELECT * FROM trackerDB.company`;
-        let query = connection.query(departmentQuery, (error, res) => {   
+        let departmentQuery = `SELECT * FROM company`;
+        connection.query(departmentQuery, (error, res) => {   
           if (error) {
             console.log(error);
           }
           else {
-            console.table(res,query)
+            console.table(res)
           }
           Menu();
         })

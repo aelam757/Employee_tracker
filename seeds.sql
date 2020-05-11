@@ -1,6 +1,6 @@
 USE trackerDB;
 
-INSERT INTO company(deparment) VALUES ("Sales");
+INSERT INTO company(department) VALUES ("Sales");
 
 INSERT INTO company(department) VALUES ("Recuiters");
 
