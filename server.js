@@ -130,9 +130,9 @@ connection.connect(error => {
                 console.log(res);
                 let newQueryString;
                 if (res.Managers === -1) {
-                    newQueryString = `INSERT INTO trackerDB.employee(firstName, lastName, title, manager) VALUES ("${res.employeeFirstName}", "${res.employeeLastName}", "${res.listTitles}", null)`;
+                    newQueryString = `INSERT INTO employee(firstName, lastName, title, manager) VALUES ("${res.employeeFirstName}", "${res.employeeLastName}", "${res.listTitles}", null)`;
                 }else {
-                    newQueryString = `INSERT INTO trackerDB.employee (firstName, lastName, title, manager) VALUES ("${res.employeeFirstName}", "${res.employeeLastName}", "${res.listTitles}", "${res.Managers}")`;
+                    newQueryString = `INSERT INTO employee (firstName, lastName, title, manager) VALUES ("${res.employeeFirstName}", "${res.employeeLastName}", "${res.listTitles}", "${res.Managers}")`;
                   }
 
                   let query = connection.query(newQueryString,(error, res) => {
