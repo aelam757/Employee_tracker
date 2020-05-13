@@ -66,14 +66,14 @@ connection.connect(error => {
         return;
         }
     
-        let titles = [];
+        let department_role= [];
         for(let i = 0; i < res.length;i++){
             console.log(res[i]);
-            let titleString = res[i].title;
-            titles.push(titleString);
-            console.log(titles);
+            let departmentroleString = res[i].title;
+            department_role.push(departmentroleString);
+            console.log(department_role);
         }
-        console.log(titles);
+        console.log(department_role);
     
         let employeeQuery  = `SELECT * FROM employee`;
         connection.query(employeeQuery, (error,res) => {
@@ -105,11 +105,11 @@ connection.connect(error => {
                     name: "listTitles",
                     type: "list",
                     message: "What is the title of the new employee?",
-                    choice: titles,
+                    choice: department_role,
                     filter: (val) =>{
                         let choiceList = titles.listof(val);
-                        let title = res[choiceList].id;
-                        return title;
+                        let department_role= res[choiceList].id;
+                        return department_role;
                      }
                 },
                 {
@@ -168,7 +168,7 @@ function promptForNewDepartment() {
 };
 
 function promptForNewTitle(){
-    let newTitle = "SELECT * FROM trackerDB.company";
+    let newTitle = "SELECT * FROM company";
     connection.query(newTitle,(error,res) => {
         console.log(error, res);
         if (error){
@@ -203,7 +203,7 @@ function promptForNewTitle(){
                     }
                 ]) .then(res => {
                     console.log(error,res);
-                    let dptQuery = `INSERT INTO trackerDB.title (titleID, salary, department_role) VALUES ("${response.newTitle}", "${response.salaryRange}", "${response.newTitlesDepartment}")`
+                    let dptQuery = `INSERT INTO title (titleID, salary, department_role) VALUES ("${response.newTitle}", "${response.salaryRange}", "${response.newTitlesDepartment}")`
                     let companyQuery = connection.query(dptQuery, (error,res)=>{
                         console.log(error,companyQuery,res);
                     })
@@ -225,7 +225,7 @@ function promptForNewTitle(){
         })
     }
     function AllTitles() {
-        let thatQuery = `SELECT * FROM trackerDB.title`;
+        let thatQuery = `SELECT * FROM title`;
         let thisQuery = connection.query(thatQuery, (error,res) => {
             if (error){
                 console.log(error,thisQuery,res);
@@ -234,15 +234,15 @@ function promptForNewTitle(){
         })
     }
     function AllEmployees() {
-        let queryAllEmployees = `SELECT e.id, e.firstName, e.lastName, r.title, r.salary, concat(m.firstName, ' ', m.lastName) AS Manager
-        FROM employeeDB.employee e
-        LEFT JOIN employeeDB.employeeRole r
-        ON e.roleID = r.id
-        LEFT JOIN employeeDB.employee m
+        let queryAllEmployees = `SELECT e.id, e.firstName, e.lastName, titleID, salary, concat(m.firstName, ' ', m.lastName) AS Manager
+        FROM trackerDB.employee e
+        LEFT JOIN trackerDB.title r
+        ON e.titleID = r.id
+        LEFT JOIN trackerDB.employee m
         ON e.managerID = m.id`;
         let queryAgain = connection.query(queryAllEmployees, (error, res) => {
       
-          if (errpr) {
+          if (error) {
             console.log(error);
           }
           else {
